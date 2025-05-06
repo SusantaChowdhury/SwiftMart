@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" th:href="@{/css/output.css}" />
+</head>
+
+<body class="bg-gray-50 min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <div th:replace="components :: customerNav"></div>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-6 py-8">
+        <!-- Page Header -->
+        <div class="flex items-center justify-between mb-8">
+            <h1 class="text-4xl font-bold text-gray-800">Shop Products</h1>
+            <div class="flex space-x-4">
+                <!-- Filter Dropdown -->
+                <div class="relative">
+                    <button id="filterDropdownButton" data-dropdown-toggle="filterDropdown"
+                        class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg shadow-sm hover:bg-gray-100 flex items-center space-x-2">
+                        <i class="fas fa-filter"></i>
+                        <span>Filter</span>
+                    </button>
+                    <div id="filterDropdown" class="hidden z-10 w-48 bg-white rounded-lg shadow-lg">
+                        <ul class="py-2 text-sm text-gray-700">
+                            <li>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Electronics</a>
+                            </li>
+                            <li>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Fashion</a>
+                            </li>
+                            <li>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Grocery</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Sort Dropdown -->
+                <div class="relative">
+                    <button id="sortDropdownButton" data-dropdown-toggle="sortDropdown"
+                        class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg shadow-sm hover:bg-gray-100 flex items-center space-x-2">
+                        <i class="fas fa-sort"></i>
+                        <span>Sort</span>
+                    </button>
+                    <div id="sortDropdown" class="hidden z-10 w-48 bg-white rounded-lg shadow-lg">
+                        <ul class="py-2 text-sm text-gray-700">
+                            <li>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Price: Low to High</a>
+                            </li>
+                            <li>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Price: High to Low</a>
+                            </li>
+                            <li>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Newest Arrivals</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            <div th:each="product : ${products}" class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+                <!-- Product Image -->
+                <div class="relative">
+                    <img th:src="${product.imageUrl}" alt="Product Image"
+                        class="w-full h-48 object-cover rounded-lg mb-4">
+                    <span
+                        class="absolute top-2 left-2 bg-indigo-600 text-white text-xs font-semibold px-2 py-1 rounded">
+                        New
+                    </span>
+                </div>
+
+                <!-- Product Name -->
+                <h2 class="text-lg font-semibold text-gray-800 truncate" th:text="${product.name}"></h2>
+
+                <!-- Product Price -->
+                <p class="text-gray-600 mt-2 text-lg font-medium" th:text="'₹' + ${product.price}"></p>
+
+                <!-- Product Description
+                <p class="text-sm text-gray-500 mt-2 line-clamp-2" th:text="${product.description}"></p> -->
+
+                <!-- Product stock -->
+                <p class="text-sm text-green-500 mt-2" th:text="${product.stockQuantity}"></p>
+                <p class="text-sm text-green-500">left</p>
+
+
+                <!-- Quantity Selector -->
+                <div class="flex items-center mt-4 space-x-2">
+                    <!-- Decrease Button -->
+                    <button type="button"
+                        class="bg-gray-200 text-gray-800 px-3 py-2 rounded-l-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        onclick="decreaseQuantity(this)">
+                        <i class="fas fa-minus"></i>
+                    </button>
+
+                    <!-- Quantity Input -->
+                    <input type="number" value="" th:attr="max=${product.stockQuantity}" min="0"
+                        class="w-16 text-center border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        oninput="updateButtons(this)">
+
+                    <!-- Increase Button -->
+                    <button type="button"
+                        class="bg-gray-200 text-gray-800 px-3 py-2 rounded-r-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        th:attr="onclick='increaseQuantity(this, ' + ${product.stockQuantity} + ')'">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+
+                <!-- Add to Cart Button -->
+                <form th:action="@{/customer/addToCart/{id}(id=${product.id})}" method="post" class="mt-4">
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit"
+                        class="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700">
+                        Add to Cart
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Pagination -->
+        <div class="flex justify-center mt-10">
+            <nav aria-label="Page navigation">
+                <ul class="inline-flex items-center -space-x-px">
+                    <li>
+                        <a href="#"
+                            class="px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">
+                            Previous
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">
+                            1
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">
+                            2
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">
+                            3
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">
+                            Next
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div th:replace="components :: footer"></div>
+
+    <!-- Scripts -->
+    <script>
+        function increaseQuantity(button, maxStock) {
+            const input = button.previousElementSibling;
+            let currentValue = parseInt(input.value);
+
+            console.log("Max stock: " + maxStock);
+
+            // If the input is empty, set it to 1
+            if (isNaN(currentValue)) {
+                currentValue = 0;
+            }
+
+            if (currentValue < maxStock) {
+                input.value = currentValue + 1;
+            }
+            updateButtons(input);
+        }
+
+        function decreaseQuantity(button) {
+            const input = button.nextElementSibling;
+            let currentValue = parseInt(input.value);
+
+            // If the input is empty, set it to 1
+            if (isNaN(currentValue)) {
+                currentValue = 1;
+            }
+
+            if (currentValue >= 1) {
+                input.value = currentValue - 1;
+            } else {
+                input.value = ""; // Reset to empty if the quantity goes below 1
+            }
+            updateButtons(input);
+        }
+
+        function updateButtons(input) {
+            const currentValue = parseInt(input.value);
+            const maxStock = parseInt(input.getAttribute("max"));
+            const decreaseButton = input.previousElementSibling;
+            const increaseButton = input.nextElementSibling;
+
+            // Disable decrease button if quantity is empty or 1
+            if (isNaN(currentValue) || currentValue <= 0) {
+                decreaseButton.disabled = true;
+                decreaseButton.classList.add("opacity-50", "cursor-not-allowed");
+            } else {
+                decreaseButton.disabled = false;
+                decreaseButton.classList.remove("opacity-50", "cursor-not-allowed");
+            }
+
+            // Disable increase button if quantity reaches max stock
+            if (!isNaN(currentValue) && currentValue >= maxStock) {
+                increaseButton.disabled = true;
+                increaseButton.classList.add("opacity-50", "cursor-not-allowed");
+            } else {
+                increaseButton.disabled = false;
+                increaseButton.classList.remove("opacity-50", "cursor-not-allowed");
+            }
+        }
+
+        // Initialize buttons on page load
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll("input[type='number']").forEach(input => {
+                updateButtons(input);
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+</body>
+
+</html>

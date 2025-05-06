@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body class="bg-gray-50 min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <div th:replace="components :: adminNav"></div>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Product Details</h1>
+
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4" th:text="${product.name}"></h2>
+            <p class="text-sm text-gray-600 mb-2">
+                <span class="font-semibold">Category:</span> <span th:text="${product.category}"></span>
+            </p>
+            <p class="text-sm text-gray-600 mb-2">
+                <span class="font-semibold">Price:</span> ₹<span th:text="${product.price}"></span>
+            </p>
+            <p class="text-sm text-gray-600 mb-2">
+                <span class="font-semibold">Stock Quantity:</span> <span th:text="${product.stockQuantity}"></span>
+            </p>
+            <!-- <p class="text-sm text-gray-600 mb-4">
+                <span class="font-semibold">Description:</span> <span th:text="${product.description}"></span>
+            </p> -->
+            <p class="text-sm text-gray-600 mb-4">
+                <span class="font-semibold">Description:</span>
+                <span id="description" class="line-clamp-2 overflow-hidden" th:text="${product.description}"></span>
+                <button id="toggleDescription" class="text-indigo-600 hover:text-indigo-800 ml-2">
+                    Read More
+                </button>
+            </p>
+
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Seller Details</h3>
+            <p class="text-sm text-gray-600 mb-2">
+                <span class="font-semibold">Name:</span> <span th:text="${product.seller.name}"></span>
+            </p>
+            <p class="text-sm text-gray-600 mb-2">
+                <span class="font-semibold">Email:</span> <span th:text="${product.seller.email}"></span>
+            </p>
+            <p class="text-sm text-gray-600 mb-2">
+                <span class="font-semibold">Phone:</span> <span th:text="${product.seller.phone}"></span>
+            </p>
+        </div>
+
+        <div class="mt-6">
+            <a href="/admin/viewProducts" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700">
+                Back to Products
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div th:replace="components :: footer"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const description = document.getElementById('description');
+            const toggleButton = document.getElementById('toggleDescription');
+
+            toggleButton.addEventListener('click', () => {
+                if (description.classList.contains('line-clamp-2')) {
+                    description.classList.remove('line-clamp-2');
+                    toggleButton.textContent = 'Read Less';
+                } else {
+                    description.classList.add('line-clamp-2');
+                    toggleButton.textContent = 'Read More';
+                }
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+</body>
+
+</html>

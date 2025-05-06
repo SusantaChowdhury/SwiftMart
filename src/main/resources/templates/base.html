@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" th:fragment="parent(content, title)" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-th-replace="${title}"></title>
+    <link data-th-href="@{/output.css}" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" th:href="@{'/styles.css'}">
+</head>
+
+<body class="bg-gray-400 text-xl">
+
+    <!-- common header -->
+    <div th:replace="components :: navbar"></div>
+    <!-- <div th:unless="${title}== 'Welcome'" th:replace="components :: navbar"></div> -->
+
+    <!-- Content will be injected here -->
+    <div th:replace="${content}"></div>
+
+    <!-- common footer -->
+    <div th:replace="components :: footer"></div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <script data-th-src="@{'/js/script.js'}"></script>
+</body>
+
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" />
+</head>
+
+<body class="bg-gray-50 min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <div th:replace="components :: sellerNav"></div>
+
+
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Add Product</h1>
+        <form action="/seller/addProduct" method="post" class="bg-white p-6 rounded-xl shadow">
+            <div class="mb-4">
+                <label for="name" class="block text-sm font-medium text-gray-700">Product Name</label>
+                <input type="text" id="name" name="name" required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+            </div>
+            <div class="mb-4">
+                <label for="brand" class="block text-sm font-medium text-gray-700">Brand</label>
+                <input type="text" id="brand" name="brand" required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+            </div>
+            <div class="mb-4">
+                <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                <textarea id="description" name="description" rows="4" required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></textarea>
+            </div>
+            <div class="mb-4">
+                <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
+                <select id="category" name="category" required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    <option value="" disabled selected>Select a Category</option>
+                    <option value="ELECTRONICS">Electronics</option>
+                    <option value="FASHION">Fashion</option>
+                    <option value="HOUSEHOLD">Household</option>
+                    <option value="GROCERY">Grocery</option>
+                    <option value="BEAUTY">Beauty</option>
+                    <option value="SPORTS">Sports</option>
+                    <option value="BOOKS">Books</option>
+                    <option value="TOYS">Toys</option>
+                    <option value="STATIONARY">Stationary</option>
+                    <option value="FURNITURE">Furniture</option>
+                    <option value="HEALTH">Health</option>
+                    <option value="PET_SUPPLIES">Pet Supplies</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
+                <input type="number" id="price" name="price" step="0.01" required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+            </div>
+            <div class="mb-4">
+                <label for="stockQuantity" class="block text-sm font-medium text-gray-700">Stock Quantity</label>
+                <input type="number" id="stockQuantity" name="stockQuantity" required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+            </div>
+            <div class="mb-4">
+                <label for="imageUrl" class="block text-sm font-medium text-gray-700">Image URL</label>
+                <input type="text" id="imageUrl" name="imageUrl"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+            </div>
+            <!-- <div class="mb-4">
+                <label for="images" class="block text-sm font-medium text-gray-700">Upload Product Images</label>
+                <input type="file" id="images" name="images" multiple accept="image/*"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                <p class="text-sm text-gray-500 italic">You can upload multiple images for the product.</p>
+            </div> -->
+            <button type="submit"
+                class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                Add Product
+            </button>
+        </form>
+    </main>
+
+    <!-- Footer -->
+    <div th:replace="components :: footer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+</body>
+
+</html>

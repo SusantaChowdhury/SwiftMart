@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Products</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" />
+</head>
+
+<body class="bg-gray-50 min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <div th:replace="components :: sellerNav"></div>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">My Products</h1>
+
+        <!-- Sorting and Filtering -->
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <label for="sort" class="block text-sm font-medium text-gray-700">Sort By</label>
+                <select id="sort" name="sort"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    <option value="name">Name</option>
+                    <option value="price">Price</option>
+                    <option value="category">Category</option>
+                </select>
+            </div>
+            <div>
+                <label for="filter" class="block text-sm font-medium text-gray-700">Filter By Category</label>
+                <select id="filter" name="filter"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    <option value="">All</option>
+                    <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}"></option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Product Cards -->
+        <div th:if="${products.size() > 0}" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div th:each="product : ${products}"
+                class="bg-gray-100 rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:bg-gray-200">
+
+                <div class="p-4">
+                    <img th:src="${product.imageUrl}" alt="Product Image" class="w-full h-48 object-cover rounded">
+                    <h2 class="text-lg font-bold text-gray-800" th:text="${product.name}"></h2>
+                    <p class="text-sm text-gray-600" th:text="'Brand: ' + ${product.brand}"></p>
+                    <p class="text-sm text-gray-600" th:text="'Category: ' + ${product.category}"></p>
+                    <p class="text-sm text-gray-600" th:text="'Price: ₹' + ${product.price}"></p>
+                    <p class="text-sm text-gray-600" th:text="'Stock: ' + ${product.stockQuantity}"></p>
+                    <div class="mt-4 flex justify-between">
+                        <a th:href="@{/seller/editProduct(id=${product.id})}"
+                            class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                        <a href="#" class="text-red-600 hover:text-red-900">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- No Products Message -->
+        <div th:if="${products.size() == 0}" class="text-center bg-gray-100 p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">No Products Found</h2>
+            <p class="text-gray-600">You have not enlisted any products yet. Start adding products to showcase them
+                here.</p>
+            <a th:href="@{/seller/addProduct}"
+                class="mt-4 inline-block bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700">
+                Add Product
+            </a>
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-8 flex justify-center">
+            <nav class="inline-flex rounded-md shadow">
+                <a href="#"
+                    class="px-4 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Previous</a>
+                <a href="#"
+                    class="px-4 py-2 border-t border-b border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">1</a>
+                <a href="#"
+                    class="px-4 py-2 border-t border-b border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">2</a>
+                <a href="#"
+                    class="px-4 py-2 border-t border-b border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">3</a>
+                <a href="#"
+                    class="px-4 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Next</a>
+            </nav>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div th:replace="components :: footer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+</body>
+
+</html>

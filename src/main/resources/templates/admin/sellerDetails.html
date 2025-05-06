@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Details</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body class="bg-gray-50 min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <div th:replace="components :: adminNav"></div>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Seller Details</h1>
+
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4" th:text="${seller.name}"></h2>
+            <p class="text-sm text-gray-600 mb-2">
+                <span class="font-semibold">Email:</span> <span th:text="${seller.email}"></span>
+            </p>
+            <p class="text-sm text-gray-600 mb-2">
+                <span class="font-semibold">Phone:</span> <span th:text="${seller.phone}"></span>
+            </p>
+            <p class="text-sm text-gray-600 mb-2">
+                <span class="font-semibold">Address:</span> <span th:text="${seller.address}"></span>
+            </p>
+            <p class="text-sm text-gray-600 mb-2">
+                <span class="font-semibold">Total Products Enlisted:</span> <span
+                    th:text="${seller.products.size()}"></span>
+            </p>
+        </div>
+
+        <div class="mt-6">
+            <a href="/admin/viewProducts" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700">
+                Back to Products
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div th:replace="components :: footer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+</body>
+
+</html>
